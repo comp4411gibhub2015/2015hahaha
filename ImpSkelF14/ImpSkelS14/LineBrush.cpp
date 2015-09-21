@@ -46,7 +46,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	glVertex2d(target.x, target.y);
 
 	glEnd();
-	//very new
+
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)
