@@ -47,9 +47,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 
 	glEnd();
 	//testing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
-
-	//123141
+	//hehehehahaha
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)
