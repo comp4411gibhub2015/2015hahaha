@@ -51,6 +51,8 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	//hahahahahahahah
 
 	//hehe
+
+	////t12423t423213555453423
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)
