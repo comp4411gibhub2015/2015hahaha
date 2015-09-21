@@ -49,6 +49,8 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	//testing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	//hahahahahahahah
+
+	//hehe
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)
