@@ -8,9 +8,18 @@
 #include "impressionistDoc.h"
 #include "originalview.h"
 
+#define MOUSE_MOVE			0
+#define LEFT_MOUSE_DOWN		1
+#define LEFT_MOUSE_DRAG		2
+#define LEFT_MOUSE_UP		3
+#define RIGHT_MOUSE_DOWN	4
+#define RIGHT_MOUSE_DRAG	5
+#define RIGHT_MOUSE_UP		6
+
 #ifndef WIN32
 #define min(a, b)	( ( (a)<(b) ) ? (a) : (b) )
 #endif
+
 
 OriginalView::OriginalView(int			x, 
 						   int			y, 
@@ -75,7 +84,17 @@ void OriginalView::draw()
 		glDrawBuffer( GL_BACK );
 		glDrawPixels( drawWidth, drawHeight, GL_RGB, GL_UNSIGNED_BYTE, bitstart );
 
-	}
+		if (eventToDo == MOUSE_MOVE || eventToDo == LEFT_MOUSE_DRAG || eventToDo == RIGHT_MOUSE_DRAG) {
+					glBegin(GL_QUADS);
+					glVertex2i(cursor.x - 2, cursor.y + 2);
+					glVertex2i(cursor.x + 2, cursor.y + 2);
+					glVertex2i(cursor.x + 2, cursor.y - 2);
+					glVertex2i(cursor.x - 2, cursor.y - 2);
+					glColor3d(1.0,0.0,0.0);
+
+					glEnd();
+			}
+		}
 			
 	glFlush();
 }
@@ -90,4 +109,3 @@ void OriginalView::resizeWindow(int	width,
 {
 	resize(x(), y(), width, height);
 }
-

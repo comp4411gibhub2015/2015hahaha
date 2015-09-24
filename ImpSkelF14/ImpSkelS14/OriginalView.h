@@ -32,6 +32,10 @@ public:
 
 	ImpressionistDoc*	m_pDoc;
 
+	//cursor variable
+	int eventToDo;
+	Point cursor;
+
 private:
 	int	m_nWindowWidth, 
 		m_nWindowHeight;

@@ -45,10 +45,10 @@ void CircleBrush::BrushMove(const Point source, const Point target)
 	}
 
 	glBegin(GL_LINE_LOOP);
-	SetColor(source);
-	for (int j = 0; j < size; ++j){
-		for (int i = 0; i < 300; ++i)
-			glVertex2d(target.x + j * cos(2 * PI / 300 * i), target.y + j * sin(2 * PI / 300 * i));
+		SetColor(source);
+		for (int j = 0; j < size; ++j){
+			for (int i = 0; i < 300; ++i)
+				glVertex2d(target.x + j/2 * cos(2 * PI / 300 * i), target.y + j/2 * sin(2 * PI / 300 * i));
 	}
 
 	glEnd();
