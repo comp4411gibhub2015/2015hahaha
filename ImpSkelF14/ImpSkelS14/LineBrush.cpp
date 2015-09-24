@@ -55,6 +55,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	//angle type == slider
 	if (angleType == 0){
 
+<<<<<<< HEAD
 		glVertex2d(target.x + changeOfX, target.y + changeOfY);
 		glVertex2d(target.x - changeOfX, target.y - changeOfY);
 	}
@@ -83,6 +84,10 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	}
 	glEnd();
 	setPrevPoint(target);
+=======
+	glEnd();
+
+>>>>>>> d242e1a9a53e703099a07779813e5611261098e4
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)
