@@ -15,9 +15,8 @@
 // Include individual brush headers here.
 #include "PointBrush.h"
 #include "LineBrush.h"
-#include "CircleBrush.h"
-//#include "CircleBrush.h"
-//#include "CircleBrush.h"
+#include "ScatteredLineBrush.h"
+#include "ScatteredPointBrush.h"
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
 
@@ -41,11 +40,11 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[BRUSH_LINES]				
 		= new LineBrush( this, "Lines" );
 	ImpBrush::c_pBrushes[BRUSH_CIRCLES]				
-		= new CircleBrush( this, "Circles" );
+		= new PointBrush( this, "Circles" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_POINTS]	
-		= new PointBrush( this, "Scattered Points" );
+		= new ScatteredPointBrush( this, "Scattered Points" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_LINES]		
-		= new PointBrush( this, "Scattered Lines" );
+		= new ScatteredLineBrush( this, "Scattered Lines" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_CIRCLES]	
 		= new PointBrush( this, "Scattered Circles" );
 
@@ -81,10 +80,12 @@ void ImpressionistDoc::setBrushType(int type)
 	if (type == 1 || type == 4){
 		m_pUI->m_LineWidthSlider->activate();
 		m_pUI->m_LineAngleSlider->activate();
+		m_pUI->m_AngleTypeChoice->activate();
 	}
 	else{
 		m_pUI->m_LineWidthSlider->deactivate();
 		m_pUI->m_LineAngleSlider->deactivate();
+		m_pUI->m_AngleTypeChoice->deactivate();
 	}
 }
 

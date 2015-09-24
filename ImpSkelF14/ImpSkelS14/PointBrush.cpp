@@ -39,12 +39,16 @@ void PointBrush::BrushMove( const Point source, const Point target )
 		printf( "PointBrush::BrushMove  document is NULL\n" );
 		return;
 	}
-
+	//DrawPoint(source);
+	printf("source = ( %d, %d )  target = ( %d, %d ) \n", source.x, source.y,target.x,target.y);
 	glBegin( GL_POINTS );
+		//glColor3f(1.0f, 0.0f, 0.0f);
+	
+		//glVertex2d(source.x, source.y);
 		SetColor( source );
-
+		
 		glVertex2d( target.x, target.y );
-
+		
 	glEnd();
 }
 

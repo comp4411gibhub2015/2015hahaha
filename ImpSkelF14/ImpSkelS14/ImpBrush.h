@@ -20,6 +20,12 @@ enum
 	BRUSH_SCATTERED_CIRCLES,
 	NUM_BRUSH_TYPE // Make sure this stays at the end!
 };
+enum
+{
+	SLIDER = 0,
+	GRADIENT,
+	BRUSH_DIRECTION
+};
 
 
 class ImpressionistDoc; // Pre-declaring class
@@ -46,7 +52,7 @@ public:
 
 	// according to the source image and the position, determine the draw color
 	void SetColor( const Point source );
-
+	void DrawPoint(const Point source);
 	// get Doc to communicate with it
 	ImpressionistDoc* GetDocument( void );
 

@@ -36,7 +36,7 @@ public:
 // for brush dialog
 	Fl_Window*			m_brushDialog;
 	Fl_Choice*			m_BrushTypeChoice;
-
+	Fl_Choice*			m_AngleTypeChoice;
 	Fl_Slider*			m_BrushSizeSlider;
 	Fl_Button*          m_ClearCanvasButton;
 
@@ -51,7 +51,8 @@ public:
 	void				resize_windows(int w, int h);
 
 	// Interface to get attribute
-
+	int					getSelectedAngleType();
+	void				setSelectedAngleType(int type);
 	int					getSize();
 	void				setSize(int size);
 	int					getLineWidth();
@@ -69,11 +70,12 @@ private:
 	int		m_nLineWidth;
 	int		m_nLineAngle;
 	double	m_nAlpha;
+	int		m_selectedAngleType = 0;	// 0 = slider, 1 = Gradient, 2 = Brush Direction ; 
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];
 	static Fl_Menu_Item		brushTypeMenu[NUM_BRUSH_TYPE+1];
-
+	static Fl_Menu_Item		angleTypeMenu[4];
 	static ImpressionistUI*	whoami(Fl_Menu_* o);
 
 	// All callbacks here.  Callbacks are declared 
@@ -90,6 +92,7 @@ private:
 	static void cb_LineWidthSlides(Fl_Widget* o, void* v);
 	static void cb_LineAngleSlides(Fl_Widget* o, void* v);
 	static void cb_AlphaSlides(Fl_Widget* o, void* v);
+	static void cb_angleChoice(Fl_Widget* o, void* v);
 };
 
 #endif

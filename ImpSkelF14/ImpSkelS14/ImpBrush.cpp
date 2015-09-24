@@ -42,13 +42,33 @@ char* ImpBrush::BrushName(void)
 //----------------------------------------------------
 void ImpBrush::SetColor (const Point source)
 {
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 	ImpressionistDoc* pDoc = GetDocument();
 
 
 	GLubyte color[3];
 
 	memcpy ( color, pDoc->GetOriginalPixel( source ), 3 );
- 
-	glColor3ubv( color );
+	
+	GLubyte colorWithAlpha[4];
+	for (int i = 0; i < 3; i++){
+		colorWithAlpha[i] = color[i];
+	}
+
+	colorWithAlpha[3] = GLubyte((pDoc->m_pUI->getAlpha())*255);
+	glColor4ubv( colorWithAlpha );
 
 }
+
+
+/*
+void ImpBrush::DrawPoint(const Point source){
+	
+	glBegin(GL_POINTS);
+	glColor3f(1.0f, 0.0f, 0.0f);
+
+	glVertex2d(source.x, source.y);
+
+	glEnd();
+}
+*/

@@ -7,7 +7,7 @@
 
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
-#include "Linebrush.h"
+#include "LineBrush.h"
 
 extern float frand();
 
@@ -39,25 +39,64 @@ void LineBrush::BrushMove(const Point source, const Point target)
 		printf("PointBrush::BrushMove  document is NULL\n");
 		return;
 	}
+	//setPrevPoint(target);
+	int angleType = dlg->getSelectedAngleType();
+	int size = dlg->getSize();
+	double angle = (dlg->getLineAngle()*M_PI)/180;
+	double radius = size / 2.0;
+	double changeOfX = radius *cos(angle);
+	double changeOfY = radius *sin(angle);
+	glLineWidth(dlg->getLineWidth());
+	//glLineWidth(10);
+	//printf("%d", dlg->getLineWidth());
+	glBegin(GL_LINES);
 
-	glBegin(GL_POINTS);
 	SetColor(source);
-	
-	glVertex2d(target.x, target.y);
+	//angle type == slider
+	if (angleType == 0){
 
+		glVertex2d(target.x + changeOfX, target.y + changeOfY);
+		glVertex2d(target.x - changeOfX, target.y - changeOfY);
+	}
+	//angle type == gradient
+	else if (angleType == 1){
+
+	}
+	//angle type == brush direction
+	else if (angleType == 2){
+		Point prevPoint = getPrevPoint();
+		double diffX = target.x - prevPoint.x;
+		double diffY = target.y - prevPoint.y;
+		double angleOfPrev;
+		if (diffX != 0){
+			 angleOfPrev = atan(diffY / diffX) * 180 / M_PI;
+			 changeOfX = radius *cos(angleOfPrev);
+			 changeOfY = radius *sin(angleOfPrev);
+			 glVertex2d(target.x + changeOfX, target.y + changeOfY);
+			 glVertex2d(target.x - changeOfX, target.y - changeOfY);
+		}
+		else{
+			glVertex2d(target.x, target.y + radius);
+			glVertex2d(target.x, target.y - radius);
+		}
+
+	}
 	glEnd();
-	//testing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
-	//hahahahahahahah
-
-	//hehe
-
-	////t12423t423213555453423
-	///htunlfcja dlj 
+	setPrevPoint(target);
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)
 {
 	// do nothing so far
 }
+
+void LineBrush::setPrevPoint(Point	prevTarget)
+{
+	this->prevTarget = prevTarget;
+}
+
+Point LineBrush::getPrevPoint(){
+	return prevTarget;
+}
+
 

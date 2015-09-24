@@ -317,6 +317,19 @@ void ImpressionistUI::cb_AlphaSlides(Fl_Widget* o, void* v)
 	printf("%d", ((ImpressionistUI*)(o->user_data()))->m_nAlpha);
 }
 
+
+//-----------------------------------------------------------
+// Updates the Line brush angle to use from the value of the 
+// Meun
+// Called by the UI when the meun is selected
+//-----------------------------------------------------------
+void ImpressionistUI::cb_angleChoice(Fl_Widget* o, void* v)
+{
+	int type = (int)v;
+	printf("type = %d \n", type);
+	((ImpressionistUI*)(o->user_data()))->m_selectedAngleType = type;
+}
+
 //---------------------------------- per instance functions --------------------------------------
 
 //------------------------------------------------
@@ -426,6 +439,22 @@ void ImpressionistUI::setAlpha(double alpha)
 	if (alpha <= 1.00 && alpha >= 0)
 		m_AlphaSlider->value(m_nAlpha);
 }
+//------------------------------------------------
+// Return the angle type 
+//------------------------------------------------
+int ImpressionistUI::getSelectedAngleType()
+{
+	return m_selectedAngleType;
+}
+
+//-------------------------------------------------
+// Set the angle type 
+//-------------------------------------------------
+void ImpressionistUI::setSelectedAngleType(int type)
+{
+	m_selectedAngleType = type;
+}
+
 
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
@@ -465,6 +494,12 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {0}
 };
 
+Fl_Menu_Item ImpressionistUI::angleTypeMenu[4] = {
+	{ "Slider/Right Mouse", FL_ALT + 's', (Fl_Callback *)ImpressionistUI::cb_angleChoice, (void *)SLIDER },
+	{ "Gradient", FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_angleChoice, (void *)GRADIENT },
+	{ "Brush Direction", FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_angleChoice, (void *)BRUSH_DIRECTION },
+	{ 0 }
+};
 
 
 //----------------------------------------------------
@@ -514,6 +549,12 @@ ImpressionistUI::ImpressionistUI() {
 		m_ClearCanvasButton->user_data((void*)(this));
 		m_ClearCanvasButton->callback(cb_clear_canvas_button);
 
+
+		m_AngleTypeChoice = new Fl_Choice(115, 40, 150, 25, "&Stroke Direction");
+		m_AngleTypeChoice->user_data((void*)(this));	// record self to be used by static callback functions
+		m_AngleTypeChoice->menu(angleTypeMenu);
+		m_AngleTypeChoice->callback(cb_angleChoice);
+		m_AngleTypeChoice->deactivate();
 
 		// Add brush size slider to the dialog 
 		m_BrushSizeSlider = new Fl_Value_Slider(10, 80, 300, 20, "Size");
