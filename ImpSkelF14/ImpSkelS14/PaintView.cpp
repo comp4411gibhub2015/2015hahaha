@@ -10,7 +10,7 @@
 #include "paintview.h"
 #include "ImpBrush.h"
 
-
+#define MOUSE_MOVE			0
 #define LEFT_MOUSE_DOWN		1
 #define LEFT_MOUSE_DRAG		2
 #define LEFT_MOUSE_UP		3
@@ -27,6 +27,9 @@
 static int		eventToDo;
 static int		isAnEvent=0;
 static Point	coord;
+
+
+
 
 PaintView::PaintView(int			x, 
 					 int			y, 
@@ -106,10 +109,18 @@ void PaintView::draw()
 		switch (eventToDo)
 		{
 		case LEFT_MOUSE_DOWN:
-			m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+
+			{
+				m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+				printf("move");
+			}
 			break;
 		case LEFT_MOUSE_DRAG:
-			m_pDoc->m_pCurrentBrush->BrushMove(source, target);
+			m_pDoc->m_pCurrentBrush->BrushMove( source, target );
+			m_pDoc->m_pUI->m_origView->cursor.x = coord.x + m_nStartCol;
+			m_pDoc->m_pUI->m_origView->cursor.y = m_nEndRow - coord.y;
+			m_pDoc->m_pUI->m_origView->refresh();
+
 			break;
 		case LEFT_MOUSE_UP:
 			m_pDoc->m_pCurrentBrush->BrushEnd(source, target);
@@ -124,6 +135,7 @@ void PaintView::draw()
 			}
 			break;
 		case RIGHT_MOUSE_DRAG:
+
 			if ((m_pDoc->m_pCurrentBrush->BrushName() == "Scattered Lines") || (m_pDoc->m_pCurrentBrush->BrushName() == "Lines")){
 				RestoreContent();
 				glLineWidth(1);
@@ -135,6 +147,12 @@ void PaintView::draw()
 				glVertex2d(target.x, target.y);
 				glEnd();
 			}
+
+			m_pDoc->m_pUI->m_origView->cursor.x = coord.x + m_nStartCol;
+			m_pDoc->m_pUI->m_origView->cursor.y = m_nEndRow - coord.y;
+			m_pDoc->m_pUI->m_origView->refresh();
+
+
 			break;
 		case RIGHT_MOUSE_UP:
 			if ((m_pDoc->m_pCurrentBrush->BrushName() == "Scattered Lines") || (m_pDoc->m_pCurrentBrush->BrushName() == "Lines")){
@@ -156,7 +174,6 @@ void PaintView::draw()
 				RestoreContent();
 			}
 			break;
-
 		default:
 			printf("Unknown event!!\n");		
 			break;
@@ -213,6 +230,10 @@ int PaintView::handle(int event)
 	case FL_MOVE:
 		coord.x = Fl::event_x();
 		coord.y = Fl::event_y();
+		m_pDoc->m_pUI->m_origView->eventToDo = MOUSE_MOVE;
+		m_pDoc->m_pUI->m_origView->cursor.x = coord.x + m_nStartCol;
+		m_pDoc->m_pUI->m_origView->cursor.y = m_nEndRow - coord.y;
+		m_pDoc->m_pUI->m_origView->refresh();
 		break;
 	default:
 		return 0;
