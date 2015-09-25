@@ -40,7 +40,7 @@ void PointBrush::BrushMove( const Point source, const Point target )
 		return;
 	}
 	//DrawPoint(source);
-	printf("source = ( %d, %d )  target = ( %d, %d ) \n", source.x, source.y,target.x,target.y);
+	//printf("source = ( %d, %d )  target = ( %d, %d ) \n", source.x, source.y,target.x,target.y);
 	glBegin( GL_POINTS );
 		//glColor3f(1.0f, 0.0f, 0.0f);
 	

@@ -12,6 +12,7 @@
 #include <FL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>
+#include <math.h>  
 
 class ImpressionistDoc;
 
@@ -42,7 +43,11 @@ private:
 			m_nEndCol,
 			m_nWindowWidth, 
 			m_nWindowHeight;
-
+	Point startPoint;
+	float diffX;
+	float diffY;
+	int length;
+	int angle;
 };
 
 #endif

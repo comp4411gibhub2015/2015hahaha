@@ -42,7 +42,8 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	//setPrevPoint(target);
 	int angleType = dlg->getSelectedAngleType();
 	int size = dlg->getSize();
-	double angle = (dlg->getLineAngle()*M_PI)/180;
+	angle = (dlg->getLineAngle()*M_PI) / 180;
+	
 	double radius = size / 2.0;
 	double changeOfX = radius *cos(angle);
 	double changeOfY = radius *sin(angle);
@@ -55,13 +56,70 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	//angle type == slider
 	if (angleType == 0){
 
-<<<<<<< HEAD
+
 		glVertex2d(target.x + changeOfX, target.y + changeOfY);
 		glVertex2d(target.x - changeOfX, target.y - changeOfY);
 	}
 	//angle type == gradient
 	else if (angleType == 1){
-
+		
+		int sobelX[3][3] = {
+			{ -1, 0, 1 },
+			{ -2, 0, 2 },
+			{ -1, 0, 1 }
+		};
+		int sobelY[3][3] = {
+			{ 1, 2, 1 },
+			{ 0, 0, 0 },
+			{ -1, -2, -1 }
+		};
+		int gradX=0 , gradY=0 ;
+		int gradMatrix[3][3];
+		for (int row = 0; row < 3; row++){
+			for (int col = 0; col < 3; col++){
+				GLubyte color[3];
+				Point point = Point(target.x - 1 + row, target.y + 1 - col);
+				memcpy(color, pDoc->GetOriginalPixel(point), 3);
+				gradMatrix[row][col] = 0.3*color[0] + 0.59*color[1] + 0.11*color[2];
+				
+			}
+		}
+		for (int row = 0; row < 3; row++){
+			for (int col = 0; col < 3; col++){
+				gradX += gradMatrix[row][col] * sobelX[row][col];
+				gradY += gradMatrix[row][col] * sobelY[row][col];
+				printf("%d, ",gradMatrix[row][col]);
+			}
+			printf("\n");
+		}
+		printf("gradX = %d, gradY = %d ", gradX, gradY);
+		//printf("is it true : %d \n", gradX == 0);
+		//angle = 26 * 180 / M_PI;
+		
+		if (gradX == 0){
+			//angle = 90;
+			//printf("gradX == 0        !!!!!!!!!!!!!!!!!!!!!1/n");
+			glVertex2d(target.x, target.y + radius);
+			glVertex2d(target.x, target.y - radius);
+			
+			
+		}
+		else{
+			angle =int (atan(gradY / (double)gradX) * 180 / M_PI);
+			//printf("angle is cal by formula!!!!!!!!\n");
+			changeOfX = radius *cos(angle);
+			changeOfY = radius *sin(angle);
+			glVertex2d(target.x + changeOfX, target.y + changeOfY);
+			glVertex2d(target.x - changeOfX, target.y - changeOfY);
+		}
+		printf("  angle = %f \n", angle);
+		/*
+		printf("angle ==90? %d \n", angle==90);
+		changeOfX = radius *cos(angle);
+		changeOfY = radius *sin(angle);
+		glVertex2d(target.x + changeOfX, target.y + changeOfY);
+		glVertex2d(target.x - changeOfX, target.y - changeOfY);
+		*/
 	}
 	//angle type == brush direction
 	else if (angleType == 2){
@@ -84,10 +142,8 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	}
 	glEnd();
 	setPrevPoint(target);
-=======
-	glEnd();
 
->>>>>>> d242e1a9a53e703099a07779813e5611261098e4
+
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)

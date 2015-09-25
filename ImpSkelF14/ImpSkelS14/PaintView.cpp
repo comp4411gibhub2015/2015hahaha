@@ -55,7 +55,8 @@ void PaintView::draw()
 
 		// We're only using 2-D, so turn off depth 
 		glDisable( GL_DEPTH_TEST );
-
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		ortho();
 
 		glClear( GL_COLOR_BUFFER_BIT );
@@ -97,33 +98,63 @@ void PaintView::draw()
 
 		// Clear it after processing.
 		isAnEvent	= 0;	
-
+		
 		Point source( coord.x + m_nStartCol, m_nEndRow - coord.y );
 		Point target( coord.x, m_nWindowHeight - coord.y );
 		
 		// This is the event handler
-		switch (eventToDo) 
+		switch (eventToDo)
 		{
 		case LEFT_MOUSE_DOWN:
-			m_pDoc->m_pCurrentBrush->BrushBegin( source, target );
+			m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
 			break;
 		case LEFT_MOUSE_DRAG:
-			m_pDoc->m_pCurrentBrush->BrushMove( source, target );
+			m_pDoc->m_pCurrentBrush->BrushMove(source, target);
 			break;
 		case LEFT_MOUSE_UP:
-			m_pDoc->m_pCurrentBrush->BrushEnd( source, target );
+			m_pDoc->m_pCurrentBrush->BrushEnd(source, target);
 
 			SaveCurrentContent();
 			RestoreContent();
 			break;
 		case RIGHT_MOUSE_DOWN:
-
+			//printf("Type = %d \n", m_pDoc->m_pCurrentBrush->BrushName()=="Lines");
+			if ((m_pDoc->m_pCurrentBrush->BrushName() == "Scattered Lines") || (m_pDoc->m_pCurrentBrush->BrushName() == "Lines")){
+				startPoint = target;
+			}
 			break;
 		case RIGHT_MOUSE_DRAG:
+			if ((m_pDoc->m_pCurrentBrush->BrushName() == "Scattered Lines") || (m_pDoc->m_pCurrentBrush->BrushName() == "Lines")){
+				RestoreContent();
+				glLineWidth(1);
+				glColor3f(1.0f, 0.0f, 0.0f);
+				//printf("startPoint ( %d, %d )", startPoint.x, startPoint.y);
+				glBegin(GL_LINES);
 
+				glVertex2d(startPoint.x, startPoint.y);
+				glVertex2d(target.x, target.y);
+				glEnd();
+			}
 			break;
 		case RIGHT_MOUSE_UP:
+			if ((m_pDoc->m_pCurrentBrush->BrushName() == "Scattered Lines") || (m_pDoc->m_pCurrentBrush->BrushName() == "Lines")){
+				//printf("start = ( %d, %d ) , target = ( %d, %d) \n", startPoint.x, startPoint.y, target.x, target.y);
+				diffX = (startPoint.x - target.x);
+				diffY = (startPoint.y - target.y);
 
+				//printf("diffX= %d, diffY = %d \n", startPoint.x - target.x, diffY);
+				length = sqrt((diffX*diffX) + (diffY*diffY));
+				m_pDoc->m_pUI->setSize(length);
+				if (diffX == 0){
+					angle = 90;
+				}
+				else{
+					angle = atan(diffY / diffX) * 180 / M_PI;
+				}
+				//printf("angle = %d  , diffX= %d, diffY = %d \n", angle,diffX,diffY );
+				m_pDoc->m_pUI->setLineAngle(angle);
+				RestoreContent();
+			}
 			break;
 
 		default:

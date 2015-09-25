@@ -64,7 +64,7 @@ public:
 
 private:
 	ImpressionistDoc*	m_pDoc;
-
+	GLubyte colorWithAlpha[4];
 	// Brush's name (not used in this version).
 	char*				m_pBrushName;
 };

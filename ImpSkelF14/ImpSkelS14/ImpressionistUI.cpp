@@ -314,7 +314,7 @@ void ImpressionistUI::cb_AlphaSlides(Fl_Widget* o, void* v)
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	((ImpressionistUI*)(o->user_data()))->m_nAlpha = double(((Fl_Slider *)o)->value());
-	printf("%d", ((ImpressionistUI*)(o->user_data()))->m_nAlpha);
+	//printf("%f", ((ImpressionistUI*)(o->user_data()))->m_nAlpha);
 }
 
 
